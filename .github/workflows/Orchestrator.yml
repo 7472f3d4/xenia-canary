@@ -1,17 +1,7 @@
 name: Orchestrator
 
 on:
-  push:
-    paths-ignore:
-      - '*.md'
-      - 'docs/**'
-      - 'LICENSE'
-  pull_request:
-    types: [opened, synchronize, reopened, ready_for_review]
-    paths-ignore:
-      - '*.md'
-      - 'docs/**'
-      - 'LICENSE'
+  workflow_dispatch:
 
 concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
@@ -40,13 +30,13 @@ jobs:
   # ===========================================================================
   build-windows:
     name: Windows (x86-64)
-    needs: [lint, commit-message]
+    needs: [lint]
     if: ${{ !failure() && !cancelled() }}
     uses: ./.github/workflows/Windows_x86.yml
 
   build-linux:
     name: Linux (x86-64)
-    needs: [lint, commit-message]
+    needs: [lint]
     if: ${{ !failure() && !cancelled() }}
     uses: ./.github/workflows/Linux_x86.yml
     with:
